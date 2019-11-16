@@ -16,18 +16,18 @@ using System.Web.Http.Results;
 namespace ApiApp.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class TesteController : ApiController
+    public class UsuarioController : ApiController
     {
 
         private Helpers helper;
 
-        public TesteController()
+        public UsuarioController()
         {
             helper = new Helpers();
 
         }
 
-        // POST: api/Teste
+        
         [AcceptVerbs("Post")]
         public string CadastrarUsuario([FromBody]object usuario)
         {
@@ -75,11 +75,6 @@ namespace ApiApp.Controllers
             {
                 throw ex;
             }
-        }     
-
-        // DELETE: api/Teste/5
-        public void Delete(int id)
-        {
-        }
+        }          
     }
 }

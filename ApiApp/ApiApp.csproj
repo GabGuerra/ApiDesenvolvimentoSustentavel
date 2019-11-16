@@ -217,7 +217,7 @@
     <Compile Include="Business\EventoBL.cs" />
     <Compile Include="Business\UsuarioBL.cs" />
     <Compile Include="Controllers\EventoController.cs" />
-    <Compile Include="Controllers\TesteController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="DataAccess\Conexao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

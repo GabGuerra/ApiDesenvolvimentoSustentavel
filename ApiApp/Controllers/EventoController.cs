@@ -14,7 +14,7 @@ using AcceptVerbsAttribute = System.Web.Http.AcceptVerbsAttribute;
 namespace ApiApp.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class EventoController : Controller
+    public class EventoController : ApiController
     {
         // GET: Evento
         private Helpers helper;
@@ -54,7 +54,7 @@ namespace ApiApp.Controllers
             }
         }
 
-        [AcceptVerbs("Get")]
+        [AcceptVerbs("GET")]
         public string BuscaEventoDestaque()
         {
             EventoBL Eb = new EventoBL();
