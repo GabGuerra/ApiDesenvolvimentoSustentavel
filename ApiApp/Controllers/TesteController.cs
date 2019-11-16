@@ -75,7 +75,7 @@ namespace ApiApp.Controllers
             {
                 throw ex;
             }
-        }
+        }     
 
         // DELETE: api/Teste/5
         public void Delete(int id)
