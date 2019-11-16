@@ -23,7 +23,7 @@ namespace ApiApp.Business
 
                 MySqlCommand sql = new MySqlCommand(strSql, conn);                
                 sql.Parameters.AddWithValue("@NOM_USUARIO", usuario.NomUsuario);
-                sql.Parameters.AddWithValue("@DAT_NASCIMENTO", usuario.DatNascimento);
+                sql.Parameters.AddWithValue("@DAT_NASCIMENTO", Convert.ToDateTime(usuario.DatNascimento));
                 sql.Parameters.AddWithValue("@EMAIL", usuario.Email);
                 sql.Parameters.AddWithValue("@NUM_CELULAR", usuario.NumCelular);
                 sql.Parameters.AddWithValue("@SENHA", usuario.Senha);

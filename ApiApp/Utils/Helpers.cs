@@ -16,8 +16,8 @@ namespace ApiApp.Utils
             foreach (var parametro in parametros)
             {
 
-                var chave = parametro.Split('=')[0];
-                var valor = parametro.Split('=')[1];
+                var chave = parametro.Split(':')[0];
+                var valor = parametro.Split(':')[1];
                 myHashMap.Add(chave, valor);
             }
 
