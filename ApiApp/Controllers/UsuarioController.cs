@@ -27,22 +27,40 @@ namespace ApiApp.Controllers
 
         }
 
-        
+        /// <summary>Método para registrar dados de usuário                
+        /// </summary>
         [AcceptVerbs("Post")]
         public string CadastrarUsuario([FromBody]object usuario)
         {
             try
             {
+                //Recebe JSON e instancia a model
                 JObject usuarioJson = JObject.Parse(usuario.ToString());                
                 CadUsuarioModel model = new CadUsuarioModel();
+
                 model.NomUsuario = (string)usuarioJson.SelectToken("nome");
                 model.DatNascimento = (string)usuarioJson.SelectToken("datnascimento");
                 model.Email = (string)usuarioJson.SelectToken("email");
                 model.NumCelular = (string)usuarioJson.SelectToken("celular");
                 model.Senha = (string)usuarioJson.SelectToken("senha");
+                model.Endereco.Endereco = (string)usuarioJson.SelectToken("endereco");
+                model.Endereco.Cidade = (string)usuarioJson.SelectToken("cidade");
+                model.Endereco.Estado = (string)usuarioJson.SelectToken("estado");
+                model.Endereco.Cep = (string)usuarioJson.SelectToken("Cep");                 
+                
+                
+                //Instancia a BL e chama os métodos de cadastro
                 var usuarioBL = new UsuarioBL();
+
+                //Insere novo endereço e resgata código do mesmo.   
+                model.Endereco.codEndereco = usuarioBL.CadastrarEndereco(model);
+
+                //Cadastra o usuario
                 usuarioBL.CadastrarUsuario(model);
-                dynamic ret = new System.Dynamic.ExpandoObject();
+
+                
+                 //Cria objeto dinânimco para retornar email e senha via JSON                
+                 dynamic ret = new System.Dynamic.ExpandoObject();
                 ret.email = model.Email;
                 ret.senha = model.Senha;
                 return JsonConvert.SerializeObject(ret);
@@ -53,7 +71,39 @@ namespace ApiApp.Controllers
             }            
         }
 
-        
+        /// <summary>Método para atualizar dados de usuário                
+        /// </summary>
+        [AcceptVerbs("Post")]
+        public void AtualizarDados([FromBody]object usuario)
+        {
+            try
+            {
+                //Obtém JSON e instancia model
+                JObject usuarioJson = JObject.Parse(usuario.ToString());
+                LoginUsuarioModel model = new LoginUsuarioModel();
+
+                //Preenche objeto
+                model.NomUsuario = (string)usuarioJson.SelectToken("nome");
+                model.DatNascimento = (string)usuarioJson.SelectToken("datnascimento");
+                model.Email = (string)usuarioJson.SelectToken("email");
+                model.NumCelular = (string)usuarioJson.SelectToken("celular");                
+                model.Endereco.Endereco = (string)usuarioJson.SelectToken("endereco");
+                model.Endereco.Cidade = (string)usuarioJson.SelectToken("endereco");
+                model.Endereco.Estado =  (string)usuarioJson.SelectToken("estado");
+
+                //Instancia BL e chama método de atualização               
+                var usuarioBL = new UsuarioBL();
+                usuarioBL.AtualizarDados(model);                
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>Método para logar usuário           
+        /// </summary>
         [AcceptVerbs("Post")]
         public string Login([FromBody]object usuario)
         {

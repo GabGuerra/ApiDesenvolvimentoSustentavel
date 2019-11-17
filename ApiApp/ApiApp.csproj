@@ -222,6 +222,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\EnderecoModel.cs" />
     <Compile Include="Model\EventoModel.cs" />
     <Compile Include="Model\LoginUsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
