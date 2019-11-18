@@ -54,14 +54,19 @@ namespace ApiApp.Controllers
             }
         }
 
+
         [AcceptVerbs("GET")]
         public string BuscaEventoDestaque()
         {
-            EventoBL Eb = new EventoBL();
-            EventoModel em= Eb.BuscaEventoDestaque();
-           
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(em);
+            EventoBL Eb = new EventoBL();           
+            return Newtonsoft.Json.JsonConvert.SerializeObject(Eb.BuscaEventoDestaque());
+        }
+        //Busca os grupos recentes 
+        [AcceptVerbs("GET")]
+        public string BuscaGruposRecentes()
+        {
+            EventoBL Eb = new EventoBL();       
+            return Newtonsoft.Json.JsonConvert.SerializeObject(Eb.BuscaGruposRecentes());
         }
     }  
 }
