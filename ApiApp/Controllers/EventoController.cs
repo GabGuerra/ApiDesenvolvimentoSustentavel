@@ -25,16 +25,28 @@ namespace ApiApp.Controllers
         }
 
         [AcceptVerbs("Post")]
-        public void NovoEvento([FromBody]object evento)
+        public string NovoEvento([FromBody]object evento)
         {
             try
-            { 
+            {
+                //Recebe JSON e transforma.
                 JObject eventoJson = JObject.Parse(evento.ToString());
 
-                var eventoModel = new CadEventoModel();
+                //prenche dados da model Evento
+                var eventoModel = new EventoModel();
+
+                //Instancia BL e Model, atribuindo valor à model
                 var eventoBL = new EventoBL();
 
-                eventoBL.CadastrarEvento(eventoModel);                
+                //Salva no bd
+
+                eventoBL.CadastrarEvento(eventoModel);
+
+                //Retorna a Model preenchida com valores do BD.
+                //return Newtonsoft.Json.JsonConvert.SerializeObject(eventoBL.CadastrarEvento(eventoModel));
+
+                //return Newtonsoft.Json.JsonConvert.SerializeObject(usuarioBL.Login(usuarioLogin));
+                return null;
             }
             catch (Exception ex)
             {
@@ -45,9 +57,11 @@ namespace ApiApp.Controllers
         [AcceptVerbs("GET")]
         public string BuscaEventoDestaque()
         {
-            EventoBL bl = new EventoBL();
-            CadEventoModel model = bl.BuscaEventoDestaque();           
-            return Newtonsoft.Json.JsonConvert.SerializeObject(model);
+            EventoBL Eb = new EventoBL();
+            EventoModel em= Eb.BuscaEventoDestaque();
+           
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(em);
         }
     }  
 }

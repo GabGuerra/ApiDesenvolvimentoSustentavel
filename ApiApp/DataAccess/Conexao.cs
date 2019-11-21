@@ -9,7 +9,7 @@ public class Conexao
 
     public MySqlConnection GetConexao()
     {
-        MySqlConnection con = new MySqlConnection("server=localhost;database=desenvolvimentoSustentavel;uid=root;password=; convert zero datetime=True");
+        MySqlConnection con = new MySqlConnection("server=localhost;database=desenvolvimentoSustentavel;uid=root;password=;");
         return con;        
     }
 
