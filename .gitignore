@@ -4,3 +4,5 @@ ApiApp/obj/Debug/ApiApp.csprojAssemblyReference.cache
 .vs/DesenvolvimentoSustentavelApi/v16/Server/sqlite3/storage.ide-shm
 .vs/DesenvolvimentoSustentavelApi/v16/Server/sqlite3/storage.ide
 .vs/DesenvolvimentoSustentavelApi/v16/.suo
+/ApiApp/Model/EnderecoModel.cs
+/.vs/DesenvolvimentoSustentavelApi
