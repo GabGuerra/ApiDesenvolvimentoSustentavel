@@ -7,7 +7,7 @@ namespace ApiApp.Model
 {
     public class EventoModel
     {
-        public int Cod_Evento { get; set; }
+        public int CodEvento { get; set; }
         public string DscEvento { get; set; }
         public int QtdIntegrantes { get; set; }
         public int QtdRecomendadaIntegrantes { get; set; }

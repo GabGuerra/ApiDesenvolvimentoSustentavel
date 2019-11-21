@@ -1,6 +1,7 @@
 ﻿using ApiApp.Model;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -46,18 +47,16 @@ namespace ApiApp.Business
             try
             {
                 conn.Open();
-                string strSql = @"SELECT * FROM EVENTO";
+                string strSql = @"SELECT * FROM EVENTO WHERE IND_EVENTO_DESTAQUE = 1";
                 MySqlCommand sql = new MySqlCommand(strSql, conn);
                 var dr = sql.ExecuteReader();
                 EventoModel eventoDestaque = new EventoModel();
                 while (dr.Read())
                 {
-                    eventoDestaque.Cod_Evento = Convert.ToInt32(dr["cod_evento"].ToString());
+                    eventoDestaque.CodEvento = Convert.ToInt32(dr["cod_evento"]);
                     eventoDestaque.DscEvento = dr["DSC_EVENTO"].ToString();
-                    //eventoDestaque.DatInicioEvento = Convert.ToDateTime(dr["DAT_INICIO_EVENTO"]);
-                    //eventoDestaque.DatFimEvento= Convert.ToDateTime(dr["DAT_FIM_EVENTO"]);
-                    //eventoDestaque.DscCategoriaEvento = dr["DSC_CATEGORIA_EVENTO"].ToString();
-
+                    eventoDestaque.DatInicioEvento = Convert.ToDateTime(dr["DAT_INICIO_EVENTO"]);
+                    eventoDestaque.DscCategoriaEvento = dr["DSC_CATEGORIA_EVENTO"].ToString();
                 }
                 return eventoDestaque;
             }
@@ -70,6 +69,81 @@ namespace ApiApp.Business
             {
                 conn.Close();
 
+            }
+        }
+
+
+        //grupos recentes
+
+        public List<EventoModel> BuscaGruposRecentes()
+        {
+            var conexaoBD = new Conexao();
+            var conn = conexaoBD.GetConexao();
+        
+            try
+            {
+                List<EventoModel> ListaEvento = new List<EventoModel>();
+                conn.Open();
+                string strSql = @"SELECT * FROM EVENTO WHERE IND_EVENTO_DESTAQUE = 0";
+                MySqlCommand sql = new MySqlCommand(strSql, conn);
+                var dr = sql.ExecuteReader();
+               
+                while (dr.Read())
+                {
+                    EventoModel eventoDestaque = new EventoModel();
+                    eventoDestaque.CodEvento = Convert.ToInt32(dr["cod_evento"]);
+                    eventoDestaque.CodEvento.ToString();
+                    eventoDestaque.DscEvento = dr["DSC_EVENTO"].ToString();
+                    eventoDestaque.DatInicioEvento = Convert.ToDateTime(dr["DAT_INICIO_EVENTO"]);
+                    eventoDestaque.DscCategoriaEvento = dr["DSC_CATEGORIA_EVENTO"].ToString();
+                    ListaEvento.Add(eventoDestaque);
+                }
+                return ListaEvento;
+            }
+            catch
+            {
+
+                return null;
+            }
+            finally
+            {
+                conn.Close();
+
+            }
+        }
+
+        //Busca dados do evento clicado
+        public EventoModel  BuscaEvento(int codEvento)
+        {
+            var conexaoBD = new Conexao();
+            var conn = conexaoBD.GetConexao();
+
+            try
+            {
+                conn.Open();
+                string strSql = @"SELECT * FROM EVENTO WHERE COD_EVENTO = @CODEVENTO";
+                
+                MySqlCommand sql = new MySqlCommand(strSql, conn);
+                sql.Parameters.AddWithValue("@CODEVENTO", codEvento);
+                var dr = sql.ExecuteReader();
+                EventoModel eventoDestaque = new EventoModel();
+                while (dr.Read())
+                {                    
+                    eventoDestaque.CodEvento = Convert.ToInt32(dr["cod_evento"]);
+                    eventoDestaque.CodEvento.ToString();
+                    eventoDestaque.DscEvento = dr["DSC_EVENTO"].ToString();
+                    eventoDestaque.DatInicioEvento = Convert.ToDateTime(dr["DAT_INICIO_EVENTO"]);
+                    eventoDestaque.DscCategoriaEvento = dr["DSC_CATEGORIA_EVENTO"].ToString();
+                }
+                return eventoDestaque;
+            }
+            catch
+            {
+                return null;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
     }
