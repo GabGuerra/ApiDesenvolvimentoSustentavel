@@ -219,15 +219,18 @@
     <Compile Include="Controllers\EventoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="DataAccess\Conexao.cs" />
+    <Compile Include="DataAccess\EventoDAO.cs" />
+    <Compile Include="DataAccess\UsuarioDAO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\EnderecoModel.cs" />
-    <Compile Include="Model\EventoModel.cs" />
+    <Compile Include="Model\CadEventoModel.cs" />
     <Compile Include="Model\LoginUsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Helpers.cs" />
     <Compile Include="Model\CadUsuarioModel.cs" />
+    <Compile Include="Utils\SqlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

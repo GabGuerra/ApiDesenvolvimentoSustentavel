@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ApiApp.Model
 {
-    public class EventoModel
+    public class CadEventoModel
     {
         public int Cod_Evento { get; set; }
         public string DscEvento { get; set; }

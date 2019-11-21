@@ -1,76 +1,74 @@
-﻿using ApiApp.Model;
+﻿using ApiApp.DataAccess;
+using ApiApp.Model;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
 namespace ApiApp.Business
 {
-    public class EventoBL
+    public class EventoBL: IDisposable
     {
-        public void CadastrarEvento(EventoModel evento)
+        private EventoDAO dao;
+
+        public EventoBL()
         {
-            var conexaoBD = new Conexao();
-            var conn = conexaoBD.GetConexao();
+            dao = new EventoDAO();
+        }
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+        public void CadastrarEvento(CadEventoModel evento)
+        {            
             try
             {
-                conn.Open();
-                string strSql = @"INSERT INTO EVENTO(DSC_EVENTO, QTD_INTEGRANTES, QTD_RECOMENDADA_INTEGRANTES, IND_SITUACAO_EVENTO, DAT_INICIO_EVENTO, DAT_FIM_EVENTO, DSC_CATEGORIA_EVENTO)
-                                      VALUES
-                                      (@DSCEVENTO, 1, @QTDRECOMENDADA, @INDSITUACAO, @DATINICIO, @DATFIM, @DSCCATEGORIA);";
-
-                MySqlCommand sql = new MySqlCommand(strSql, conn);
-                sql.Parameters.AddWithValue("@DSCEVENTO", evento.DscEvento);
-                sql.Parameters.AddWithValue("@QTDRECOMENDADA", evento.QtdRecomendadaIntegrantes);
-                sql.Parameters.AddWithValue("@INDSITUACAO", evento.IndSituacaoEvento);
-                sql.Parameters.AddWithValue("@DATINICIO", Convert.ToDateTime(evento.DatInicioEvento));
-                sql.Parameters.AddWithValue("@DATFIM", Convert.ToDateTime(evento.DatFimEvento));
-                sql.Parameters.AddWithValue("@DSCCATEGORIA", evento.DscCategoriaEvento);
-                sql.ExecuteNonQuery();
+                dao.CadastrarEvento(evento);       
             }
             catch (Exception ex)
             {
+                //Error.Message = $"Erro ao cadastrar evento: {ex.Message}"
                 throw ex;
-            }
-            finally
-            {
-                conn.Close();
-            }
+            }          
         }
-           //Busca Eventos Destaque
-        public EventoModel BuscaEventoDestaque()
+         //Busca Eventos Destaque
+        public CadEventoModel BuscaEventoDestaque()
         {
-            var conexaoBD = new Conexao();
-            var conn = conexaoBD.GetConexao();           
+            CadEventoModel eventoDestaque = new CadEventoModel();
             try
             {
-                conn.Open();
-                string strSql = @"SELECT * FROM EVENTO";
-                MySqlCommand sql = new MySqlCommand(strSql, conn);
-                var dr = sql.ExecuteReader();
-                EventoModel eventoDestaque = new EventoModel();
-                while (dr.Read())
+                using (var dt = dao.BuscaEventoDestaque())
                 {
-                    eventoDestaque.Cod_Evento = Convert.ToInt32(dr["cod_evento"].ToString());
-                    eventoDestaque.DscEvento = dr["DSC_EVENTO"].ToString();
-                    //eventoDestaque.DatInicioEvento = Convert.ToDateTime(dr["DAT_INICIO_EVENTO"]);
-                    //eventoDestaque.DatFimEvento= Convert.ToDateTime(dr["DAT_FIM_EVENTO"]);
-                    //eventoDestaque.DscCategoriaEvento = dr["DSC_CATEGORIA_EVENTO"].ToString();
-
-                }
-                return eventoDestaque;
+                    try
+                    {
+                        if (dt.Rows.Count > 0)
+                        {
+                            foreach (DataRow dr in dt.Rows)
+                            {                                
+                                eventoDestaque.Cod_Evento = Convert.ToInt32(dr["COD_EVENTO"]);
+                                eventoDestaque.DscEvento = dr["DSC_EVENTO"].ToString();
+                            }                           
+                        }                        
+                    }
+                    catch
+                    {
+                        //Error.Message = $"Erro ao buscar evento destaque: {ex.Message}"
+                        throw;
+                    }
+                    finally
+                    {
+                        dt.Clear();
+                    }
+                }               
             }
-            catch
+            catch(Exception ex)
             {
 
-                return null;
+                throw ex;
             }
-            finally
-            {
-                conn.Close();
-
-            }
-        }
+            return eventoDestaque;
+        }      
     }
 }

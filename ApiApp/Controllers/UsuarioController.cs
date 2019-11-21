@@ -33,8 +33,7 @@ namespace ApiApp.Controllers
         public string CadastrarUsuario([FromBody]object usuario)
         {
             try
-            {
-                //Recebe JSON e instancia a model
+            {                
                 JObject usuarioJson = JObject.Parse(usuario.ToString());                
                 CadUsuarioModel model = new CadUsuarioModel();
 
@@ -47,19 +46,15 @@ namespace ApiApp.Controllers
                 model.Endereco.Cidade = (string)usuarioJson.SelectToken("cidade");
                 model.Endereco.Estado = (string)usuarioJson.SelectToken("estado");
                 model.Endereco.Cep = (string)usuarioJson.SelectToken("Cep");                 
-                
-                
-                //Instancia a BL e chama os métodos de cadastro
+                                                
                 var usuarioBL = new UsuarioBL();
 
                 //Insere novo endereço e resgata código do mesmo.   
                 model.Endereco.codEndereco = usuarioBL.CadastrarEndereco(model);
 
-                //Cadastra o usuario
-                usuarioBL.CadastrarUsuario(model);
-
                 
-                 //Cria objeto dinânimco para retornar email e senha via JSON                
+                usuarioBL.CadastrarUsuario(model);
+                                            
                  dynamic ret = new System.Dynamic.ExpandoObject();
                 ret.email = model.Email;
                 ret.senha = model.Senha;
